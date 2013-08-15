@@ -1,13 +1,13 @@
 <?php
 
 /**
- * ECSHOP ¹ÜÀíÔ±ĞÅÏ¢ÒÔ¼°È¨ÏŞ¹ÜÀí³ÌĞò
+ * ECSHOP ç®¡ç†å‘˜ä¿¡æ¯ä»¥åŠæƒé™ç®¡ç†ç¨‹åº
  * ============================================================================
- * * °æÈ¨ËùÓĞ 2005-2012 ÉÏº£ÉÌÅÉÍøÂç¿Æ¼¼ÓĞÏŞ¹«Ë¾£¬²¢±£ÁôËùÓĞÈ¨Àû¡£
- * ÍøÕ¾µØÖ·: http://www.ecshop.com£»
+ * * ç‰ˆæƒæ‰€æœ‰ 2005-2012 ä¸Šæµ·å•†æ´¾ç½‘ç»œç§‘æŠ€æœ‰é™å…¬å¸ï¼Œå¹¶ä¿ç•™æ‰€æœ‰æƒåˆ©ã€‚
+ * ç½‘ç«™åœ°å€: http://www.ecshop.comï¼›
  * ----------------------------------------------------------------------------
- * Õâ²»ÊÇÒ»¸ö×ÔÓÉÈí¼ş£¡ÄúÖ»ÄÜÔÚ²»ÓÃÓÚÉÌÒµÄ¿µÄµÄÇ°ÌáÏÂ¶Ô³ÌĞò´úÂë½øĞĞĞŞ¸ÄºÍ
- * Ê¹ÓÃ£»²»ÔÊĞí¶Ô³ÌĞò´úÂëÒÔÈÎºÎĞÎÊ½ÈÎºÎÄ¿µÄµÄÔÙ·¢²¼¡£
+ * è¿™ä¸æ˜¯ä¸€ä¸ªè‡ªç”±è½¯ä»¶ï¼æ‚¨åªèƒ½åœ¨ä¸ç”¨äºå•†ä¸šç›®çš„çš„å‰æä¸‹å¯¹ç¨‹åºä»£ç è¿›è¡Œä¿®æ”¹å’Œ
+ * ä½¿ç”¨ï¼›ä¸å…è®¸å¯¹ç¨‹åºä»£ç ä»¥ä»»ä½•å½¢å¼ä»»ä½•ç›®çš„çš„å†å‘å¸ƒã€‚
  * ============================================================================
  * $Author: liubo $
  * $Id: privilege.php 17217 2011-01-19 06:29:08Z liubo $
@@ -17,7 +17,7 @@ define('IN_ECS', true);
 
 require(dirname(__FILE__) . '/includes/init.php');
 
-/* act²Ù×÷ÏîµÄ³õÊ¼»¯ */
+/* actæ“ä½œé¡¹çš„åˆå§‹åŒ– */
 if (empty($_REQUEST['act']))
 {
     $_REQUEST['act'] = 'login';
@@ -27,15 +27,15 @@ else
     $_REQUEST['act'] = trim($_REQUEST['act']);
 }
 
-/* ³õÊ¼»¯ $exc ¶ÔÏó */
+/* åˆå§‹åŒ– $exc å¯¹è±¡ */
 $exc = new exchange($ecs->table("admin_user"), $db, 'user_id', 'user_name');
 
 /*------------------------------------------------------ */
-//-- ÍË³öµÇÂ¼
+//-- é€€å‡ºç™»å½•
 /*------------------------------------------------------ */
 if ($_REQUEST['act'] == 'logout')
 {
-    /* Çå³ıcookie */
+    /* æ¸…é™¤cookie */
     setcookie('ECSCP[admin_id]',   '', 1);
     setcookie('ECSCP[admin_pass]', '', 1);
 
@@ -45,7 +45,7 @@ if ($_REQUEST['act'] == 'logout')
 }
 
 /*------------------------------------------------------ */
-//-- µÇÂ½½çÃæ
+//-- ç™»é™†ç•Œé¢
 /*------------------------------------------------------ */
 if ($_REQUEST['act'] == 'login')
 {
@@ -63,7 +63,7 @@ if ($_REQUEST['act'] == 'login')
 }
 
 /*------------------------------------------------------ */
-//-- ÑéÖ¤µÇÂ½ĞÅÏ¢
+//-- éªŒè¯ç™»é™†ä¿¡æ¯
 /*------------------------------------------------------ */
 elseif ($_REQUEST['act'] == 'signin')
 {
@@ -71,7 +71,7 @@ elseif ($_REQUEST['act'] == 'signin')
     {
         include_once(ROOT_PATH . 'includes/cls_captcha.php');
 
-        /* ¼ì²éÑéÖ¤ÂëÊÇ·ñÕıÈ· */
+        /* æ£€æŸ¥éªŒè¯ç æ˜¯å¦æ­£ç¡® */
         $validator = new captcha();
         if (!empty($_POST['captcha']) && !$validator->check_word($_POST['captcha']))
         {
@@ -86,14 +86,14 @@ elseif ($_REQUEST['act'] == 'signin')
     $ec_salt =$db->getOne($sql);
     if(!empty($ec_salt))
     {
-         /* ¼ì²éÃÜÂëÊÇ·ñÕıÈ· */
+         /* æ£€æŸ¥å¯†ç æ˜¯å¦æ­£ç¡® */
          $sql = "SELECT user_id, user_name, password, last_login, action_list, last_login,suppliers_id,ec_salt".
             " FROM " . $ecs->table('admin_user') .
             " WHERE user_name = '" . $_POST['username']. "' AND password = '" . md5(md5($_POST['password']).$ec_salt) . "'";
     }
     else
     {
-         /* ¼ì²éÃÜÂëÊÇ·ñÕıÈ· */
+         /* æ£€æŸ¥å¯†ç æ˜¯å¦æ­£ç¡® */
          $sql = "SELECT user_id, user_name, password, last_login, action_list, last_login,suppliers_id,ec_salt".
             " FROM " . $ecs->table('admin_user') .
             " WHERE user_name = '" . $_POST['username']. "' AND password = '" . md5($_POST['password']) . "'";
@@ -101,7 +101,7 @@ elseif ($_REQUEST['act'] == 'signin')
     $row = $db->getRow($sql);
     if ($row)
     {
-        // ¼ì²éÊÇ·ñÎª¹©»õÉÌµÄ¹ÜÀíÔ± ËùÊô¹©»õÉÌÊÇ·ñÓĞĞ§
+        // æ£€æŸ¥æ˜¯å¦ä¸ºä¾›è´§å•†çš„ç®¡ç†å‘˜ æ‰€å±ä¾›è´§å•†æ˜¯å¦æœ‰æ•ˆ
         if (!empty($row['suppliers_id']))
         {
             $supplier_is_check = suppliers_list_info(' is_check = 1 AND suppliers_id = ' . $row['suppliers_id']);
@@ -111,7 +111,7 @@ elseif ($_REQUEST['act'] == 'signin')
             }
         }
 
-        // µÇÂ¼³É¹¦
+        // ç™»å½•æˆåŠŸ
         set_admin_session($row['user_id'], $row['user_name'], $row['action_list'], $row['last_login']);
         $_SESSION['suppliers_id'] = $row['suppliers_id'];
 		if(empty($row['ec_salt']))
@@ -128,7 +128,7 @@ elseif ($_REQUEST['act'] == 'signin')
             $_SESSION['shop_guide'] = true;
         }
 
-        // ¸üĞÂ×îºóµÇÂ¼Ê±¼äºÍIP
+        // æ›´æ–°æœ€åç™»å½•æ—¶é—´å’ŒIP
         $db->query("UPDATE " .$ecs->table('admin_user').
                  " SET last_login='" . gmtime() . "', last_ip='" . real_ip() . "'".
                  " WHERE user_id='$_SESSION[admin_id]'");
@@ -140,7 +140,7 @@ elseif ($_REQUEST['act'] == 'signin')
             setcookie('ECSCP[admin_pass]', md5($row['password'] . $_CFG['hash_code']), $time);
         }
 
-        // Çå³ı¹ºÎï³µÖĞ¹ıÆÚµÄÊı¾İ
+        // æ¸…é™¤è´­ç‰©è½¦ä¸­è¿‡æœŸçš„æ•°æ®
         clear_cart();
 
         ecs_header("Location: ./index.php\n");
@@ -154,23 +154,23 @@ elseif ($_REQUEST['act'] == 'signin')
 }
 
 /*------------------------------------------------------ */
-//-- ¹ÜÀíÔ±ÁĞ±íÒ³Ãæ
+//-- ç®¡ç†å‘˜åˆ—è¡¨é¡µé¢
 /*------------------------------------------------------ */
 elseif ($_REQUEST['act'] == 'list')
 {
-    /* Ä£°å¸³Öµ */
+    /* æ¨¡æ¿èµ‹å€¼ */
     $smarty->assign('ur_here',     $_LANG['admin_list']);
     $smarty->assign('action_link', array('href'=>'privilege.php?act=add', 'text' => $_LANG['admin_add']));
     $smarty->assign('full_page',   1);
     $smarty->assign('admin_list',  get_admin_userlist());
 
-    /* ÏÔÊ¾Ò³Ãæ */
+    /* æ˜¾ç¤ºé¡µé¢ */
     assign_query_info();
     $smarty->display('privilege_list.htm');
 }
 
 /*------------------------------------------------------ */
-//-- ²éÑ¯
+//-- æŸ¥è¯¢
 /*------------------------------------------------------ */
 elseif ($_REQUEST['act'] == 'query')
 {
@@ -180,33 +180,33 @@ elseif ($_REQUEST['act'] == 'query')
 }
 
 /*------------------------------------------------------ */
-//-- Ìí¼Ó¹ÜÀíÔ±Ò³Ãæ
+//-- æ·»åŠ ç®¡ç†å‘˜é¡µé¢
 /*------------------------------------------------------ */
 elseif ($_REQUEST['act'] == 'add')
 {
-    /* ¼ì²éÈ¨ÏŞ */
+    /* æ£€æŸ¥æƒé™ */
     admin_priv('admin_manage');
 
-     /* Ä£°å¸³Öµ */
+     /* æ¨¡æ¿èµ‹å€¼ */
     $smarty->assign('ur_here',     $_LANG['admin_add']);
     $smarty->assign('action_link', array('href'=>'privilege.php?act=list', 'text' => $_LANG['admin_list']));
     $smarty->assign('form_act',    'insert');
     $smarty->assign('action',      'add');
     $smarty->assign('select_role',  get_role_list());
 
-    /* ÏÔÊ¾Ò³Ãæ */
+    /* æ˜¾ç¤ºé¡µé¢ */
     assign_query_info();
     $smarty->display('privilege_info.htm');
 }
 
 /*------------------------------------------------------ */
-//-- Ìí¼Ó¹ÜÀíÔ±µÄ´¦Àí
+//-- æ·»åŠ ç®¡ç†å‘˜çš„å¤„ç†
 /*------------------------------------------------------ */
 elseif ($_REQUEST['act'] == 'insert')
 {
     admin_priv('admin_manage');
 
-    /* ÅĞ¶Ï¹ÜÀíÔ±ÊÇ·ñÒÑ¾­´æÔÚ */
+    /* åˆ¤æ–­ç®¡ç†å‘˜æ˜¯å¦å·²ç»å­˜åœ¨ */
     if (!empty($_POST['user_name']))
     {
         $is_only = $exc->is_only('user_name', stripslashes($_POST['user_name']));
@@ -217,7 +217,7 @@ elseif ($_REQUEST['act'] == 'insert')
         }
     }
 
-    /* EmailµØÖ·ÊÇ·ñÓĞÖØ¸´ */
+    /* Emailåœ°å€æ˜¯å¦æœ‰é‡å¤ */
     if (!empty($_POST['email']))
     {
         $is_only = $exc->is_only('email', stripslashes($_POST['email']));
@@ -228,7 +228,7 @@ elseif ($_REQUEST['act'] == 'insert')
         }
     }
 
-    /* »ñÈ¡Ìí¼ÓÈÕÆÚ¼°ÃÜÂë */
+    /* è·å–æ·»åŠ æ—¥æœŸåŠå¯†ç  */
     $add_time = gmtime();
     
     $password  = md5($_POST['password']);
@@ -250,10 +250,10 @@ elseif ($_REQUEST['act'] == 'insert')
            "VALUES ('".trim($_POST['user_name'])."', '".trim($_POST['email'])."', '$password', '$add_time', '$row[nav_list]', '$action_list', '$role_id')";
 
     $db->query($sql);
-    /* ×ªÈëÈ¨ÏŞ·ÖÅäÁĞ±í */
+    /* è½¬å…¥æƒé™åˆ†é…åˆ—è¡¨ */
     $new_id = $db->Insert_ID();
 
-    /*Ìí¼ÓÁ´½Ó*/
+    /*æ·»åŠ é“¾æ¥*/
     $link[0]['text'] = $_LANG['go_allot_priv'];
     $link[0]['href'] = 'privilege.php?act=allot&id='.$new_id.'&user='.$_POST['user_name'].'';
 
@@ -262,16 +262,16 @@ elseif ($_REQUEST['act'] == 'insert')
 
     sys_msg($_LANG['add'] . "&nbsp;" .$_POST['user_name'] . "&nbsp;" . $_LANG['action_succeed'],0, $link);
 
-    /* ¼ÇÂ¼¹ÜÀíÔ±²Ù×÷ */
+    /* è®°å½•ç®¡ç†å‘˜æ“ä½œ */
     admin_log($_POST['user_name'], 'add', 'privilege');
  }
 
 /*------------------------------------------------------ */
-//-- ±à¼­¹ÜÀíÔ±ĞÅÏ¢
+//-- ç¼–è¾‘ç®¡ç†å‘˜ä¿¡æ¯
 /*------------------------------------------------------ */
 elseif ($_REQUEST['act'] == 'edit')
 {
-    /* ²»ÄÜ±à¼­demoÕâ¸ö¹ÜÀíÔ± */
+    /* ä¸èƒ½ç¼–è¾‘demoè¿™ä¸ªç®¡ç†å‘˜ */
     if ($_SESSION['admin_name'] == 'demo')
     {
        $link[] = array('text' => $_LANG['back_list'], 'href'=>'privilege.php?act=list');
@@ -280,34 +280,34 @@ elseif ($_REQUEST['act'] == 'edit')
 
     $_REQUEST['id'] = !empty($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 
-    /* ²é¿´ÊÇ·ñÓĞÈ¨ÏŞ±à¼­ÆäËû¹ÜÀíÔ±µÄĞÅÏ¢ */
+    /* æŸ¥çœ‹æ˜¯å¦æœ‰æƒé™ç¼–è¾‘å…¶ä»–ç®¡ç†å‘˜çš„ä¿¡æ¯ */
     if ($_SESSION['admin_id'] != $_REQUEST['id'])
     {
         admin_priv('admin_manage');
     }
 
-    /* »ñÈ¡¹ÜÀíÔ±ĞÅÏ¢ */
+    /* è·å–ç®¡ç†å‘˜ä¿¡æ¯ */
     $sql = "SELECT user_id, user_name, email, password, agency_id, role_id FROM " .$ecs->table('admin_user').
            " WHERE user_id = '".$_REQUEST['id']."'";
     $user_info = $db->getRow($sql);
 
 
-    /* È¡µÃ¸Ã¹ÜÀíÔ±¸ºÔğµÄ°ìÊÂ´¦Ãû³Æ */
+    /* å–å¾—è¯¥ç®¡ç†å‘˜è´Ÿè´£çš„åŠäº‹å¤„åç§° */
     if ($user_info['agency_id'] > 0)
     {
         $sql = "SELECT agency_name FROM " . $ecs->table('agency') . " WHERE agency_id = '$user_info[agency_id]'";
         $user_info['agency_name'] = $db->getOne($sql);
     }
 
-    /* Ä£°å¸³Öµ */
+    /* æ¨¡æ¿èµ‹å€¼ */
     $smarty->assign('ur_here',     $_LANG['admin_edit']);
     $smarty->assign('action_link', array('text' => $_LANG['admin_list'], 'href'=>'privilege.php?act=list'));
     $smarty->assign('user',        $user_info);
 
-    /* »ñµÃ¸Ã¹ÜÀíÔ±µÄÈ¨ÏŞ */
+    /* è·å¾—è¯¥ç®¡ç†å‘˜çš„æƒé™ */
     $priv_str = $db->getOne("SELECT action_list FROM " .$ecs->table('admin_user'). " WHERE user_id = '$_GET[id]'");
 
-    /* Èç¹û±»±à¼­µÄ¹ÜÀíÔ±ÓµÓĞÁËallÕâ¸öÈ¨ÏŞ£¬½«²»ÄÜ±à¼­ */
+    /* å¦‚æœè¢«ç¼–è¾‘çš„ç®¡ç†å‘˜æ‹¥æœ‰äº†allè¿™ä¸ªæƒé™ï¼Œå°†ä¸èƒ½ç¼–è¾‘ */
     if ($priv_str != 'all')
     {
        $smarty->assign('select_role',  get_role_list());
@@ -320,12 +320,12 @@ elseif ($_REQUEST['act'] == 'edit')
 }
 
 /*------------------------------------------------------ */
-//-- ¸üĞÂ¹ÜÀíÔ±ĞÅÏ¢
+//-- æ›´æ–°ç®¡ç†å‘˜ä¿¡æ¯
 /*------------------------------------------------------ */
 elseif ($_REQUEST['act'] == 'update' || $_REQUEST['act'] == 'update_self')
 {
 
-    /* ±äÁ¿³õÊ¼»¯ */
+    /* å˜é‡åˆå§‹åŒ– */
     $admin_id    = !empty($_REQUEST['id'])        ? intval($_REQUEST['id'])      : 0;
     $admin_name  = !empty($_REQUEST['user_name']) ? trim($_REQUEST['user_name']) : '';
     $admin_email = !empty($_REQUEST['email'])     ? trim($_REQUEST['email'])     : '';
@@ -333,7 +333,7 @@ elseif ($_REQUEST['act'] == 'update' || $_REQUEST['act'] == 'update_self')
     $password = !empty($_POST['new_password']) ? ", password = '".md5(md5($_POST['new_password']).$ec_salt)."'"    : '';
     if ($_REQUEST['act'] == 'update')
     {
-        /* ²é¿´ÊÇ·ñÓĞÈ¨ÏŞ±à¼­ÆäËû¹ÜÀíÔ±µÄĞÅÏ¢ */
+        /* æŸ¥çœ‹æ˜¯å¦æœ‰æƒé™ç¼–è¾‘å…¶ä»–ç®¡ç†å‘˜çš„ä¿¡æ¯ */
         if ($_SESSION['admin_id'] != $_REQUEST['id'])
         {
             admin_priv('admin_manage');
@@ -347,7 +347,7 @@ elseif ($_REQUEST['act'] == 'update' || $_REQUEST['act'] == 'update_self')
         $admin_id = $_SESSION['admin_id'];
         $g_link = 'privilege.php?act=modif';
     }
-    /* ÅĞ¶Ï¹ÜÀíÔ±ÊÇ·ñÒÑ¾­´æÔÚ */
+    /* åˆ¤æ–­ç®¡ç†å‘˜æ˜¯å¦å·²ç»å­˜åœ¨ */
     if (!empty($admin_name))
     {
         $is_only = $exc->num('user_name', $admin_name, $admin_id);
@@ -357,7 +357,7 @@ elseif ($_REQUEST['act'] == 'update' || $_REQUEST['act'] == 'update_self')
         }
     }
 
-    /* EmailµØÖ·ÊÇ·ñÓĞÖØ¸´ */
+    /* Emailåœ°å€æ˜¯å¦æœ‰é‡å¤ */
     if (!empty($admin_email))
     {
         $is_only = $exc->num('email', $admin_email, $admin_id);
@@ -368,12 +368,12 @@ elseif ($_REQUEST['act'] == 'update' || $_REQUEST['act'] == 'update_self')
         }
     }
 
-    //Èç¹ûÒªĞŞ¸ÄÃÜÂë
+    //å¦‚æœè¦ä¿®æ”¹å¯†ç 
     $pwd_modified = false;
 
     if (!empty($_POST['new_password']))
     {
-        /* ²éÑ¯¾ÉÃÜÂë²¢ÓëÊäÈëµÄ¾ÉÃÜÂë±È½ÏÊÇ·ñÏàÍ¬ */
+        /* æŸ¥è¯¢æ—§å¯†ç å¹¶ä¸è¾“å…¥çš„æ—§å¯†ç æ¯”è¾ƒæ˜¯å¦ç›¸åŒ */
         $sql = "SELECT password FROM ".$ecs->table('admin_user')." WHERE user_id = '$admin_id'";
         $old_password = $db->getOne($sql);
 		$sql ="SELECT ec_salt FROM ".$ecs->table('admin_user')." WHERE user_id = '$admin_id'";
@@ -392,7 +392,7 @@ elseif ($_REQUEST['act'] == 'update' || $_REQUEST['act'] == 'update_self')
            sys_msg($_LANG['pwd_error'], 0, $link);
         }
 
-        /* ±È½ÏĞÂÃÜÂëºÍÈ·ÈÏÃÜÂëÊÇ·ñÏàÍ¬ */
+        /* æ¯”è¾ƒæ–°å¯†ç å’Œç¡®è®¤å¯†ç æ˜¯å¦ç›¸åŒ */
         if ($_POST['new_password'] <> $_POST['pwd_confirm'])
         {
            $link[] = array('text' => $_LANG['go_back'], 'href'=>'javascript:history.back(-1)');
@@ -413,7 +413,7 @@ elseif ($_REQUEST['act'] == 'update' || $_REQUEST['act'] == 'update_self')
         $action_list = ', action_list = \''.$row['action_list'].'\'';
         $role_id = ', role_id = '.$_POST['select_role'].' ';
     }
-    //¸üĞÂ¹ÜÀíÔ±ĞÅÏ¢
+    //æ›´æ–°ç®¡ç†å‘˜ä¿¡æ¯
     if($pwd_modified)
     {
         $sql = "UPDATE " .$ecs->table('admin_user'). " SET ".
@@ -438,10 +438,10 @@ elseif ($_REQUEST['act'] == 'update' || $_REQUEST['act'] == 'update_self')
     }
 
    $db->query($sql);
-   /* ¼ÇÂ¼¹ÜÀíÔ±²Ù×÷ */
+   /* è®°å½•ç®¡ç†å‘˜æ“ä½œ */
    admin_log($_POST['user_name'], 'edit', 'privilege');
 
-   /* Èç¹ûĞŞ¸ÄÁËÃÜÂë£¬ÔòĞèÒª½«sessionÖĞ¸Ã¹ÜÀíÔ±µÄÊı¾İÇå¿Õ */
+   /* å¦‚æœä¿®æ”¹äº†å¯†ç ï¼Œåˆ™éœ€è¦å°†sessionä¸­è¯¥ç®¡ç†å‘˜çš„æ•°æ®æ¸…ç©º */
    if ($pwd_modified && $_REQUEST['act'] == 'update_self')
    {
        $sess->delete_spec_admin_session($_SESSION['admin_id']);
@@ -452,18 +452,18 @@ elseif ($_REQUEST['act'] == 'update' || $_REQUEST['act'] == 'update_self')
        $msg = $_LANG['edit_profile_succeed'];
    }
 
-   /* ÌáÊ¾ĞÅÏ¢ */
+   /* æç¤ºä¿¡æ¯ */
    $link[] = array('text' => strpos($g_link, 'list') ? $_LANG['back_admin_list'] : $_LANG['modif_info'], 'href'=>$g_link);
    sys_msg("$msg<script>parent.document.getElementById('header-frame').contentWindow.document.location.reload();</script>", 0, $link);
 
 }
 
 /*------------------------------------------------------ */
-//-- ±à¼­¸öÈË×ÊÁÏ
+//-- ç¼–è¾‘ä¸ªäººèµ„æ–™
 /*------------------------------------------------------ */
 elseif ($_REQUEST['act'] == 'modif')
 {
-    /* ²»ÄÜ±à¼­demoÕâ¸ö¹ÜÀíÔ± */
+    /* ä¸èƒ½ç¼–è¾‘demoè¿™ä¸ªç®¡ç†å‘˜ */
     if ($_SESSION['admin_name'] == 'demo')
     {
        $link[] = array('text' => $_LANG['back_admin_list'], 'href'=>'privilege.php?act=list');
@@ -473,18 +473,18 @@ elseif ($_REQUEST['act'] == 'modif')
     include_once('includes/inc_menu.php');
     include_once('includes/inc_priv.php');
 
-    /* °üº¬²å¼ş²Ëµ¥ÓïÑÔÏî */
+    /* åŒ…å«æ’ä»¶èœå•è¯­è¨€é¡¹ */
     $sql = "SELECT code FROM ".$ecs->table('plugins');
     $rs = $db->query($sql);
     while ($row = $db->FetchRow($rs))
     {
-        /* È¡µÃÓïÑÔÏî */
+        /* å–å¾—è¯­è¨€é¡¹ */
         if (file_exists(ROOT_PATH.'plugins/'.$row['code'].'/languages/common_'.$_CFG['lang'].'.php'))
         {
             include_once(ROOT_PATH.'plugins/'.$row['code'].'/languages/common_'.$_CFG['lang'].'.php');
         }
 
-        /* ²å¼şµÄ²Ëµ¥Ïî */
+        /* æ’ä»¶çš„èœå•é¡¹ */
         if (file_exists(ROOT_PATH.'plugins/'.$row['code'].'/languages/inc_menu.php'))
         {
             include_once(ROOT_PATH.'plugins/'.$row['code'].'/languages/inc_menu.php');
@@ -523,12 +523,12 @@ elseif ($_REQUEST['act'] == 'modif')
         }
     }
 
-    /* »ñµÃµ±Ç°¹ÜÀíÔ±Êı¾İĞÅÏ¢ */
+    /* è·å¾—å½“å‰ç®¡ç†å‘˜æ•°æ®ä¿¡æ¯ */
     $sql = "SELECT user_id, user_name, email, nav_list ".
            "FROM " .$ecs->table('admin_user'). " WHERE user_id = '".$_SESSION['admin_id']."'";
     $user_info = $db->getRow($sql);
 
-    /* »ñÈ¡µ¼º½Ìõ */
+    /* è·å–å¯¼èˆªæ¡ */
     $nav_arr = (trim($user_info['nav_list']) == '') ? array() : explode(",", $user_info['nav_list']);
     $nav_lst = array();
     foreach ($nav_arr AS $val)
@@ -537,7 +537,7 @@ elseif ($_REQUEST['act'] == 'modif')
         $nav_lst[$arr[1]] = $arr[0];
     }
 
-    /* Ä£°å¸³Öµ */
+    /* æ¨¡æ¿èµ‹å€¼ */
     $smarty->assign('lang',        $_LANG);
     $smarty->assign('ur_here',     $_LANG['modif_info']);
     $smarty->assign('action_link', array('text' => $_LANG['admin_list'], 'href'=>'privilege.php?act=list'));
@@ -548,13 +548,13 @@ elseif ($_REQUEST['act'] == 'modif')
     $smarty->assign('form_act',    'update_self');
     $smarty->assign('action',      'modif');
 
-    /* ÏÔÊ¾Ò³Ãæ */
+    /* æ˜¾ç¤ºé¡µé¢ */
     assign_query_info();
     $smarty->display('privilege_info.htm');
 }
 
 /*------------------------------------------------------ */
-//-- Îª¹ÜÀíÔ±·ÖÅäÈ¨ÏŞ
+//-- ä¸ºç®¡ç†å‘˜åˆ†é…æƒé™
 /*------------------------------------------------------ */
 elseif ($_REQUEST['act'] == 'allot')
 {
@@ -566,17 +566,17 @@ elseif ($_REQUEST['act'] == 'allot')
         admin_priv('all');
     }
 
-    /* »ñµÃ¸Ã¹ÜÀíÔ±µÄÈ¨ÏŞ */
+    /* è·å¾—è¯¥ç®¡ç†å‘˜çš„æƒé™ */
     $priv_str = $db->getOne("SELECT action_list FROM " .$ecs->table('admin_user'). " WHERE user_id = '$_GET[id]'");
 
-    /* Èç¹û±»±à¼­µÄ¹ÜÀíÔ±ÓµÓĞÁËallÕâ¸öÈ¨ÏŞ£¬½«²»ÄÜ±à¼­ */
+    /* å¦‚æœè¢«ç¼–è¾‘çš„ç®¡ç†å‘˜æ‹¥æœ‰äº†allè¿™ä¸ªæƒé™ï¼Œå°†ä¸èƒ½ç¼–è¾‘ */
     if ($priv_str == 'all')
     {
        $link[] = array('text' => $_LANG['back_admin_list'], 'href'=>'privilege.php?act=list');
        sys_msg($_LANG['edit_admininfo_cannot'], 0, $link);
     }
 
-    /* »ñÈ¡È¨ÏŞµÄ·Ö×éÊı¾İ */
+    /* è·å–æƒé™çš„åˆ†ç»„æ•°æ® */
     $sql_query = "SELECT action_id, parent_id, action_code,relevance FROM " .$ecs->table('admin_action').
                  " WHERE parent_id = 0";
     $res = $db->query($sql_query);
@@ -585,7 +585,7 @@ elseif ($_REQUEST['act'] == 'allot')
         $priv_arr[$rows['action_id']] = $rows;
     }
 
-    /* °´È¨ÏŞ×é²éÑ¯µ×¼¶µÄÈ¨ÏŞÃû³Æ */
+    /* æŒ‰æƒé™ç»„æŸ¥è¯¢åº•çº§çš„æƒé™åç§° */
     $sql = "SELECT action_id, parent_id, action_code,relevance FROM " .$ecs->table('admin_action').
            " WHERE parent_id " .db_create_in(array_keys($priv_arr));
     $result = $db->query($sql);
@@ -594,7 +594,7 @@ elseif ($_REQUEST['act'] == 'allot')
         $priv_arr[$priv["parent_id"]]["priv"][$priv["action_code"]] = $priv;
     }
 
-    // ½«Í¬Ò»×éµÄÈ¨ÏŞÊ¹ÓÃ "," Á¬½ÓÆğÀ´£¬¹©JSÈ«Ñ¡
+    // å°†åŒä¸€ç»„çš„æƒé™ä½¿ç”¨ "," è¿æ¥èµ·æ¥ï¼Œä¾›JSå…¨é€‰
     foreach ($priv_arr AS $action_id => $action_group)
     {
         $priv_arr[$action_id]['priv_list'] = join(',', @array_keys($action_group['priv']));
@@ -605,7 +605,7 @@ elseif ($_REQUEST['act'] == 'allot')
         }
     }
 
-    /* ¸³Öµ */
+    /* èµ‹å€¼ */
     $smarty->assign('lang',        $_LANG);
     $smarty->assign('ur_here',     $_LANG['allot_priv'] . ' [ '. $_GET['user'] . ' ] ');
     $smarty->assign('action_link', array('href'=>'privilege.php?act=list', 'text' => $_LANG['admin_list']));
@@ -613,44 +613,44 @@ elseif ($_REQUEST['act'] == 'allot')
     $smarty->assign('form_act',    'update_allot');
     $smarty->assign('user_id',     $_GET['id']);
 
-    /* ÏÔÊ¾Ò³Ãæ */
+    /* æ˜¾ç¤ºé¡µé¢ */
     assign_query_info();
     $smarty->display('privilege_allot.htm');
 }
 
 /*------------------------------------------------------ */
-//-- ¸üĞÂ¹ÜÀíÔ±µÄÈ¨ÏŞ
+//-- æ›´æ–°ç®¡ç†å‘˜çš„æƒé™
 /*------------------------------------------------------ */
 elseif ($_REQUEST['act'] == 'update_allot')
 {
     admin_priv('admin_manage');
 
-    /* È¡µÃµ±Ç°¹ÜÀíÔ±ÓÃ»§Ãû */
+    /* å–å¾—å½“å‰ç®¡ç†å‘˜ç”¨æˆ·å */
     $admin_name = $db->getOne("SELECT user_name FROM " .$ecs->table('admin_user'). " WHERE user_id = '$_POST[id]'");
 
-    /* ¸üĞÂ¹ÜÀíÔ±µÄÈ¨ÏŞ */
+    /* æ›´æ–°ç®¡ç†å‘˜çš„æƒé™ */
     $act_list = @join(",", $_POST['action_code']);
     $sql = "UPDATE " .$ecs->table('admin_user'). " SET action_list = '$act_list', role_id = '' ".
            "WHERE user_id = '$_POST[id]'";
 
     $db->query($sql);
-    /* ¶¯Ì¬¸üĞÂ¹ÜÀíÔ±µÄSESSION */
+    /* åŠ¨æ€æ›´æ–°ç®¡ç†å‘˜çš„SESSION */
     if ($_SESSION["admin_id"] == $_POST['id'])
     {
         $_SESSION["action_list"] = $act_list;
     }
 
-    /* ¼ÇÂ¼¹ÜÀíÔ±²Ù×÷ */
+    /* è®°å½•ç®¡ç†å‘˜æ“ä½œ */
     admin_log(addslashes($admin_name), 'edit', 'privilege');
 
-    /* ÌáÊ¾ĞÅÏ¢ */
+    /* æç¤ºä¿¡æ¯ */
     $link[] = array('text' => $_LANG['back_admin_list'], 'href'=>'privilege.php?act=list');
     sys_msg($_LANG['edit'] . "&nbsp;" . $admin_name . "&nbsp;" . $_LANG['action_succeed'], 0, $link);
 
 }
 
 /*------------------------------------------------------ */
-//-- É¾³ıÒ»¸ö¹ÜÀíÔ±
+//-- åˆ é™¤ä¸€ä¸ªç®¡ç†å‘˜
 /*------------------------------------------------------ */
 elseif ($_REQUEST['act'] == 'remove')
 {
@@ -658,22 +658,22 @@ elseif ($_REQUEST['act'] == 'remove')
 
     $id = intval($_GET['id']);
 
-    /* »ñµÃ¹ÜÀíÔ±ÓÃ»§Ãû */
+    /* è·å¾—ç®¡ç†å‘˜ç”¨æˆ·å */
     $admin_name = $db->getOne('SELECT user_name FROM '.$ecs->table('admin_user')." WHERE user_id='$id'");
 
-    /* demoÕâ¸ö¹ÜÀíÔ±²»ÔÊĞíÉ¾³ı */
+    /* demoè¿™ä¸ªç®¡ç†å‘˜ä¸å…è®¸åˆ é™¤ */
     if ($admin_name == 'demo')
     {
         make_json_error($_LANG['edit_remove_cannot']);
     }
 
-    /* IDÎª1µÄ²»ÔÊĞíÉ¾³ı */
+    /* IDä¸º1çš„ä¸å…è®¸åˆ é™¤ */
     if ($id == 1)
     {
         make_json_error($_LANG['remove_cannot']);
     }
 
-    /* ¹ÜÀíÔ±²»ÄÜÉ¾³ı×Ô¼º */
+    /* ç®¡ç†å‘˜ä¸èƒ½åˆ é™¤è‡ªå·± */
     if ($id == $_SESSION['admin_id'])
     {
         make_json_error($_LANG['remove_self_cannot']);
@@ -681,7 +681,7 @@ elseif ($_REQUEST['act'] == 'remove')
 
     if ($exc->drop($id))
     {
-        $sess->delete_spec_admin_session($id); // É¾³ısessionÖĞ¸Ã¹ÜÀíÔ±µÄ¼ÇÂ¼
+        $sess->delete_spec_admin_session($id); // åˆ é™¤sessionä¸­è¯¥ç®¡ç†å‘˜çš„è®°å½•
 
         admin_log(addslashes($admin_name), 'remove', 'privilege');
         clear_cache_files();
@@ -693,7 +693,7 @@ elseif ($_REQUEST['act'] == 'remove')
     exit;
 }
 
-/* »ñÈ¡¹ÜÀíÔ±ÁĞ±í */
+/* è·å–ç®¡ç†å‘˜åˆ—è¡¨ */
 function get_admin_userlist()
 {
     $list = array();
@@ -710,23 +710,23 @@ function get_admin_userlist()
     return $list;
 }
 
-/* Çå³ı¹ºÎï³µÖĞ¹ıÆÚµÄÊı¾İ */
+/* æ¸…é™¤è´­ç‰©è½¦ä¸­è¿‡æœŸçš„æ•°æ® */
 function clear_cart()
 {
-    /* È¡µÃÓĞĞ§µÄsession */
+    /* å–å¾—æœ‰æ•ˆçš„session */
     $sql = "SELECT DISTINCT session_id " .
             "FROM " . $GLOBALS['ecs']->table('cart') . " AS c, " .
                 $GLOBALS['ecs']->table('sessions') . " AS s " .
             "WHERE c.session_id = s.sesskey ";
     $valid_sess = $GLOBALS['db']->getCol($sql);
 
-    // É¾³ıcartÖĞÎŞĞ§µÄÊı¾İ
+    // åˆ é™¤cartä¸­æ— æ•ˆçš„æ•°æ®
     $sql = "DELETE FROM " . $GLOBALS['ecs']->table('cart') .
             " WHERE session_id NOT " . db_create_in($valid_sess);
     $GLOBALS['db']->query($sql);
 }
 
-/* »ñÈ¡½ÇÉ«ÁĞ±í */
+/* è·å–è§’è‰²åˆ—è¡¨ */
 function get_role_list()
 {
     $list = array();

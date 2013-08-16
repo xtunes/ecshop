@@ -1,0 +1,8 @@
+data/brandlogo/
+data/cardimg/
+data/packimg/
+images/
+temp/caches/
+temp/query_caches/
+temp/static_caches/
+temp/compiled/
